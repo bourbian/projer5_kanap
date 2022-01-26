@@ -1,6 +1,6 @@
  
+//recuperation des produits dans le localstorage
 let produitLocalStorage = JSON.parse(localStorage.getItem("produit"));
-         //console.log(produitLocalStorage);
          console.table(produitLocalStorage);
 //affichage des produits de panier
 //selectionner la classe ou je vais injecter le code js
@@ -13,8 +13,6 @@ if(produitLocalStorage == null || produitLocalStorage==0){
     console.log(paniervide);
  
 }else {
-   
-    
         for (let produit of produitLocalStorage){
         console.log(produitLocalStorage.length);
         console.log(produit);
@@ -57,46 +55,36 @@ if(produitLocalStorage == null || produitLocalStorage==0){
        productColor.style.fontSize = "20px";
 
        // Insertion du prix
-     
-
-
        let productPrice = document.createElement("p");
        productItemContentTitlePrice.appendChild(productPrice);
-     //recuperer le prix de l api
-     
-  
+       //recuperer le prix de l API
     recupPrixArticle();   
-    
-     async function recupPrixArticle() {
+    async function recupPrixArticle() {
        const response = await fetch("http://localhost:3000/api/products/" + produit.idProduit);
        const data = await response.json();
        console.log("data.price");
        console.log(data.price);
      productPrice.innerHTML = "Pu : "+ data.price  + " €";
      
-     function QttPriceTotals(){
-
-        // Récupération du total des quantités
+    function QttPriceTotals(){
+        // Récupération du total du prix et des quantités
         var elemQtt = document.getElementsByClassName('itemQuantity');
         var myLength = elemQtt.length,
         totalQtt = 0;
+        totalPrice = 0;
         for (var i = 0; i < myLength; ++i) {
-            totalQtt += elemQtt[i].valueAsNumber;  
+            totalQtt += elemQtt[i].valueAsNumber;
+            totalPrice += (elemQtt[i].valueAsNumber * data[i].price );
         }
         let productTotalQuantity = document.getElementById('totalQuantity');
         productTotalQuantity.innerHTML = totalQtt;
         console.log(totalQtt);
-        // Récupération du prix total
-        totalPrice = 0;
-        for (var i = 0; i < myLength; ++i) {
-            totalPrice += (elemQtt[i].valueAsNumber * data.price );
-        }
-     let productTotalPrice = document.getElementById('totalPrice');
+        let productTotalPrice = document.getElementById('totalPrice');
         productTotalPrice.innerHTML = totalPrice;
         console.log(totalPrice);
-    }  
+        }  
     QttPriceTotals();
-     }
+}
          // Insertion de l'élément "div"
        let productItemContentSettings = document.createElement("div");
        productItemContent.appendChild(productItemContentSettings);
@@ -146,8 +134,6 @@ if(produitLocalStorage == null || produitLocalStorage==0){
 
             let idsupprimer =  produitLocalStorage[l].idProduit;
             let coleursupprimer =  produitLocalStorage[l].couleurProduit;
-            //console.log("idsupprimer");
-            //console.log(btn_supprimer);
 
             produitLocalStorage = produitLocalStorage.filter(
                 (el) => el.idProduit !== idsupprimer || el.couleurProduit !== coleursupprimer );
@@ -164,30 +150,7 @@ if(produitLocalStorage == null || produitLocalStorage==0){
     }
      deleteProduct();
 
-//***************************************************************************** */
-    /* function QttPriceTotals(){
-
-        // Récupération du total des quantités
-        var elemQtt = document.getElementsByClassName('itemQuantity');
-        var myLength = elemQtt.length,
-        totalQtt = 0;
-        for (var i = 0; i < myLength; ++i) {
-            totalQtt += elemQtt[i].valueAsNumber;  
-        }
-        let productTotalQuantity = document.getElementById('totalQuantity');
-        productTotalQuantity.innerHTML = totalQtt;
-        console.log(totalQtt);
-        // Récupération du prix total
-        totalPrice = 0;
-        for (var i = 0; i < myLength; ++i) {
-            totalPrice += (elemQtt[i].valueAsNumber * produitLocalStorage[i].prixProduit );
-        }
-     let productTotalPrice = document.getElementById('totalPrice');
-        productTotalPrice.innerHTML = totalPrice;
-        console.log(totalPrice);
-    }  
-    QttPriceTotals();*/
-
+//***************************************************************************** *
     // Modification d'une quantité de produit
 function modifQtt() {
     let qttModif = document.querySelectorAll(".itemQuantity");
@@ -382,26 +345,7 @@ fetch("http://localhost:3000/api/products/order", {
 
 });
 
-/*
 
-//..........mettre le contenu du localstorage dans les champs du formulaire....................
-//prendre la key du localstorage et la mettre dans une variable
-const datalocalestorage = localStorage.getItem("formulaireValeur");
-const datalocalestorageobjet = JSON.parse(datalocalestorage);
-//mettre les valeurs du localstorage dans les champs du formulaire
-document.querySelector("#firstName").value = datalocalestorageobjet.Prenom;
-document.querySelector("#lastName").value = datalocalestorageobjet.nom;
-document.querySelector("#address").value = datalocalestorageobjet.Adresse;
-document.querySelector("#city").value = datalocalestorageobjet.Ville;
-document.querySelector("#email").value = datalocalestorageobjet.Email;
-
-console.log("datalocalestorageobjet");
-console.log(datalocalestorage);
-console.log(datalocalestorageobjet);
-
-
-   
-   */
    
    
     
